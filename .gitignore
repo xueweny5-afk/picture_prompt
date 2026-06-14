@@ -1,0 +1,38 @@
+# Dependencies and generated builds
+node_modules/
+dist/
+.npm-cache/
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+data/
+
+# Runtime files
+logs/
+output/
+server.log
+server-error.log
+*.db
+*.db-shm
+*.db-wal
+
+# User-generated and imported media
+public/uploads/
+public/awesome-gpt-image-2/images/
+
+# Browser and design test artifacts
+.playwright-cli/
+midscene_run/
+playwright-report/
+test-results/
+
+# Editor and operating-system files
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+desktop.ini
