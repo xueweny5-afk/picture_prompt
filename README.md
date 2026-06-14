@@ -1,36 +1,40 @@
 # 灵感提示词
 
-一个面向 AI 生图创作者的自托管提示词画廊，用于整理、展示和复用优秀的图片生成提示词。
+这是一个用来收藏和分享 AI 生图提示词的网站。
 
-项目提供公开画廊、内容管理后台和图片反推工具。访客无需登录即可浏览、筛选和复制提示词；管理员可以维护作品、标签、来源及展示状态，并接入兼容的视觉模型 API，从参考图片生成结构化分析和中英文提示词。
+你可以把自己觉得好用的提示词和效果图保存进来，按模型、风格或场景查找。其他人打开网站后，不需要注册账号，就能浏览和复制提示词。
 
-## 功能
+## 它能做什么？
 
-- 瀑布流提示词画廊，支持搜索、模型、分类、风格和场景筛选
-- 提示词详情展示与一键复制
-- GPT Image、Midjourney、Seedream / Jimeng、Stable Diffusion 等多模型标记
-- 中文界面及中文化筛选标签
-- 管理员登录、密码修改和会话管理
-- 提示词新增、编辑、删除、草稿与重点展示
-- 自定义风格标签和场景标签
-- 列表、缩略图和下拉三种后台内容视图
-- 本地图片上传与来源信息记录
-- 图片反推：解析主体、构图、镜头、光线、色彩、材质等信息
-- 根据结构化分析自动整合中文和英文生图提示词
-- 支持 OpenAI 兼容接口，并内置阿里云百炼 Qwen3.7 配置预设
-- SQLite 本地存储，API Key 加密保存在服务端
+### 浏览提示词
 
-## 技术栈
+- 像逛图片网站一样浏览作品
+- 搜索想要的画面、风格或关键词
+- 按 GPT Image、Midjourney、即梦、Stable Diffusion 等模型筛选
+- 查看效果图、原始提示词和来源
+- 一键复制提示词
 
-- React 19
-- Vite 6
-- Express 4
-- Node.js SQLite
-- Phosphor Icons
+### 管理自己的内容
 
-## 本地运行
+网站带有一个管理后台，可以：
 
-需要安装支持 `node:sqlite` 的 Node.js 版本，推荐 Node.js 22 或更高版本。
+- 添加、修改和删除提示词
+- 上传效果图
+- 设置风格和场景标签
+- 记录作者、平台或原始链接
+- 决定内容公开展示还是保存为草稿
+
+### 根据图片反推提示词
+
+上传一张参考图后，AI 会分析画面中的人物、构图、镜头、光线、颜色和材质，并整理成可以继续使用的中文、英文提示词。
+
+目前支持接入 OpenAI 兼容接口，也提供阿里云百炼 Qwen3.7 的快速配置。
+
+## 快速开始
+
+请先安装 Node.js 22 或更高版本。
+
+在命令行中运行：
 
 ```bash
 git clone https://github.com/xueweny5-afk/picture_prompt.git
@@ -39,69 +43,66 @@ npm install
 npm run dev
 ```
 
-打开：
+看到服务启动后，打开以下地址：
 
-- 公开画廊：<http://localhost:4173/>
+- 网站首页：<http://localhost:4173/>
 - 图片反推：<http://localhost:4173/reverse>
-- 内容管理：<http://localhost:4173/admin>
+- 管理后台：<http://localhost:4173/admin>
 
-本地首次启动时，默认管理员密码为 `prompt123`。登录后台后请立即修改密码。
+第一次登录后台时，默认密码是：
 
-## 环境配置
-
-项目可以直接本地运行，并会在 `data/` 中自动生成数据库和运行密钥。正式部署时，建议参考 `.env.example`，通过服务器、容器或进程管理工具注入以下环境变量：
-
-主要配置：
-
-```dotenv
-PORT=4173
-ADMIN_PASSWORD=replace-with-a-strong-password
-SESSION_SECRET=replace-with-a-long-random-secret
-IP_HASH_SECRET=replace-with-a-separate-long-random-secret
-PROVIDER_ENCRYPTION_KEY=replace-with-at-least-32-random-characters
+```text
+prompt123
 ```
 
-`.env`、本地数据库、上传图片、日志和 API 密钥均已通过 `.gitignore` 排除，不会提交到仓库。
+登录后请尽快在后台修改密码。
 
-## 图片反推配置
+## 怎样配置图片反推？
 
-进入后台的“图片反推 API 设置”，填写：
+1. 打开管理后台。
+2. 找到“图片反推 API 设置”。
+3. 填写服务地址、模型名称和 API Key。
+4. 点击“测试连接”。
+5. 测试成功后保存设置并开启服务。
 
-1. 提供商名称
-2. 接口类型
-3. Base URL
-4. 视觉模型
-5. API Key
-6. 每个 IP 的每日调用次数
+如果使用阿里云百炼，可以先点击“应用百炼 Qwen3.7 预设”，然后只需填写自己的 API Key。
 
-使用阿里云百炼时，可以点击“应用百炼 Qwen3.7 预设”，再填写 API Key 并测试连接。
+API Key 会加密保存在网站服务端，不会显示在公开页面中。
+
+## 数据保存在哪里？
+
+提示词、后台密码和设置保存在本机的 `data/` 文件夹中，上传的图片保存在 `public/uploads/` 中。
+
+这些内容不会上传到 GitHub。需要更换电脑或服务器时，请记得备份这两个文件夹：
+
+```text
+data/
+public/uploads/
+```
 
 ## 常用命令
 
 ```bash
-npm run dev              # 启动本地服务
-npm run build            # 构建前端
-npm start                # 以生产模式启动
-npm run check            # 检查服务端语法并构建前端
-npm run test:integration # 运行接口集成测试
+npm run dev              # 启动网站
+npm run build            # 构建正式版本
+npm start                # 启动正式版本
+npm run check            # 检查项目能否正常构建
+npm run test:integration # 运行接口测试
 ```
 
-## 数据与文件
+## 使用到的技术
 
-- `data/`：SQLite 数据库、会话及加密运行密钥
-- `public/uploads/`：后台上传的图片
-- `public/artworks/`：项目内置示例图片
-- `dist/`：生产构建结果
+项目使用 React、Vite、Express 和 SQLite 开发。所有数据默认保存在自己的电脑或服务器上。
 
-运行数据不会进入 Git 仓库。迁移实例时，请单独备份 `data/` 和 `public/uploads/`。
+## 关于示例内容
 
-## 第三方内容
+部分示例提示词和图片来自公开社区及
+[`awesome-gpt-image-2`](https://github.com/freestylefly/awesome-gpt-image-2)，主要用于学习、研究和展示，不代表可以直接用于商业用途。
 
-部分提示词案例和示例图片可通过导入脚本取自
-[`freestylefly/awesome-gpt-image-2`](https://github.com/freestylefly/awesome-gpt-image-2)。
-这些内容仅用于学习、研究和展示，不代表已获得商业使用授权。具体说明请查看
-[THIRD_PARTY_NOTICE.md](./THIRD_PARTY_NOTICE.md)。
+详细说明请查看 [THIRD_PARTY_NOTICE.md](./THIRD_PARTY_NOTICE.md)。
 
-## 当前状态
+## 目前的版本
 
-这是项目的第一版，当前重点是个人维护、公开浏览和提示词复用。作者账户、社区投稿、审核与多人协作暂未纳入这一版本。
+这是项目的第一版，主要适合个人维护提示词，并开放给其他人浏览和复制。
+
+用户注册、社区投稿、内容审核和多人协作暂时还没有加入。
